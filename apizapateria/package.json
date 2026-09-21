@@ -1,20 +1,23 @@
 {
-  "name": "apizapateria",
+  "name": "api-tienda-zapatos",
   "version": "1.0.0",
-  "description": "",
-  "main": "zapateria.js",
+  "description": "API REST Tienda de Zapatos - Proyecto SENA",
+  "main": "server.js",
   "scripts": {
-    "dev": "node --watch zapateria.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "mysql2": "^3.24.4"
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.9.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "allowScripts": {
+    "bcrypt@6.0.0": true
   }
 }
