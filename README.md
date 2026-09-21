@@ -1,2 +1,2 @@
 # Tienda_de_zapatos
-Proyecto Zapatería
+Proyecto Tienda De Zapatos 
