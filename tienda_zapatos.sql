@@ -1,182 +1,331 @@
--- ============================================================
---  BASE DE DATOS: TIENDA DE ZAPATOS
---  Proyecto SENA · Node.js + MySQL
---  Cubre RF01 – RF14 según documento de casos de uso
--- ============================================================
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 12-10-2026 a las 18:56:50
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
-CREATE DATABASE IF NOT EXISTS tienda_zapatos;
-USE tienda_zapatos;
-
--- ─────────────────────────────────────────────────────────────
--- TABLA: usuarios
--- Cubre: RF01 (crear cuenta cliente), RF02 (login cliente),
---        RF03 (login administrador)
--- ─────────────────────────────────────────────────────────────
-CREATE TABLE usuarios (
-    id           INT          AUTO_INCREMENT PRIMARY KEY,
-    nombre       VARCHAR(100) NOT NULL,
-    correo       VARCHAR(100) NOT NULL UNIQUE,
-    contrasena   VARCHAR(255) NOT NULL,          -- cifrada con bcrypt
-    rol          ENUM('admin','cliente')
-                              NOT NULL DEFAULT 'cliente',
-    activo       TINYINT(1)   NOT NULL DEFAULT 1,
-    creado_en    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
-);
-
--- Admin por defecto (contraseña: Admin1234 — cámbiala en producción)
-INSERT INTO usuarios (nombre, correo, contrasena, rol)
-VALUES ('Administrador', 'admin@zapateria.com',
-        '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-        'admin');
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
--- ─────────────────────────────────────────────────────────────
--- TABLA: categorias
--- Apoya los filtros de RF10 (filtrar por categoría)
--- ─────────────────────────────────────────────────────────────
-CREATE TABLE categorias (
-    id     INT         AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(60) NOT NULL UNIQUE   -- Ej: 'Deportivo', 'Formal', 'Casual'
-);
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-INSERT INTO categorias (nombre)
-VALUES ('Deportivo'), ('Formal'), ('Casual'), ('Infantil'), ('Botas');
+--
+-- Base de datos: `tienda_zapatos`
+--
 
+-- --------------------------------------------------------
 
--- ─────────────────────────────────────────────────────────────
--- TABLA: productos
--- Cubre: RF04 (registrar), RF05 (modificar), RF06 (eliminar),
---        RF07 (visualizar), RF08 (ver detalle),
---        RF09 (buscar por nombre/marca), RF10 (filtrar)
--- ─────────────────────────────────────────────────────────────
-CREATE TABLE productos (
-    id           INT            AUTO_INCREMENT PRIMARY KEY,
-    nombre       VARCHAR(120)   NOT NULL,
-    marca        VARCHAR(80)    NOT NULL,
-    descripcion  TEXT,
-    precio       DECIMAL(10,2)  NOT NULL CHECK (precio > 0),
-    talla        VARCHAR(10)    NOT NULL,        -- Ej: '38', '42', '7.5'
-    categoria_id INT            NOT NULL,
-    stock        INT            NOT NULL DEFAULT 0 CHECK (stock >= 0),
-    imagen_url   VARCHAR(255),                  -- ruta o URL de la imagen
-    activo       TINYINT(1)     NOT NULL DEFAULT 1,
-    creado_en    TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (categoria_id) REFERENCES categorias(id)
-);
+--
+-- Estructura de tabla para la tabla `administradores`
+--
 
--- Índices para búsqueda y filtro (RF09, RF10)
-CREATE INDEX idx_productos_nombre  ON productos(nombre);
-CREATE INDEX idx_productos_marca   ON productos(marca);
-CREATE INDEX idx_productos_talla   ON productos(talla);
-CREATE INDEX idx_productos_precio  ON productos(precio);
+CREATE TABLE `administradores` (
+  `id_administrador` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `nivel_acceso` varchar(50) NOT NULL DEFAULT 'estandar'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `administradores`
+--
 
--- ─────────────────────────────────────────────────────────────
--- TABLA: pedidos
--- Cubre: RF13 (realizar pedido), RF14 (consultar estado)
--- ─────────────────────────────────────────────────────────────
-CREATE TABLE pedidos (
-    id           INT       AUTO_INCREMENT PRIMARY KEY,
-    cliente_id   INT       NOT NULL,
-    estado       ENUM('pendiente','confirmado','enviado','entregado','cancelado')
-                           NOT NULL DEFAULT 'pendiente',
-    total        DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    creado_en    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                           ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (cliente_id) REFERENCES usuarios(id)
-);
+INSERT INTO `administradores` (`id_administrador`, `id_usuario`, `nivel_acceso`) VALUES
+(1, 1, 'total');
 
-CREATE INDEX idx_pedidos_cliente ON pedidos(cliente_id);
-CREATE INDEX idx_pedidos_estado  ON pedidos(estado);
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `categorias`
+--
 
--- ─────────────────────────────────────────────────────────────
--- TABLA: detalle_pedido
--- Guarda cada línea del pedido (producto + cantidad + precio)
--- Relacionado con RF11 (gestionar cantidades), RF12 (carrito),
---              RF13 (realizar pedido)
--- ─────────────────────────────────────────────────────────────
-CREATE TABLE detalle_pedido (
-    id           INT           AUTO_INCREMENT PRIMARY KEY,
-    pedido_id    INT           NOT NULL,
-    producto_id  INT           NOT NULL,
-    cantidad     INT           NOT NULL CHECK (cantidad > 0),
-    precio_unit  DECIMAL(10,2) NOT NULL,        -- precio al momento de comprar
-    subtotal     DECIMAL(10,2) GENERATED ALWAYS AS (cantidad * precio_unit) STORED,
-    FOREIGN KEY (pedido_id)   REFERENCES pedidos(id)  ON DELETE CASCADE,
-    FOREIGN KEY (producto_id) REFERENCES productos(id)
-);
+CREATE TABLE `categorias` (
+  `id_categoria` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `categorias`
+--
 
--- ─────────────────────────────────────────────────────────────
--- TABLA: carrito
--- Estado temporal del carrito antes de confirmar (RF11, RF12)
--- Un cliente puede tener varios ítems pero solo uno por producto
--- ─────────────────────────────────────────────────────────────
-CREATE TABLE carrito (
-    id           INT AUTO_INCREMENT PRIMARY KEY,
-    cliente_id   INT NOT NULL,
-    producto_id  INT NOT NULL,
-    cantidad     INT NOT NULL DEFAULT 1 CHECK (cantidad > 0),
-    agregado_en  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY uk_carrito (cliente_id, producto_id),   -- un ítem por producto
-    FOREIGN KEY (cliente_id)  REFERENCES usuarios(id)  ON DELETE CASCADE,
-    FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE
-);
+INSERT INTO `categorias` (`id_categoria`, `nombre`, `descripcion`) VALUES
+(1, 'Deportivos', 'Calzado deportivo para hombre y mujer'),
+(2, 'Formales', 'Calzado formal y de vestir');
 
+-- --------------------------------------------------------
 
--- ─────────────────────────────────────────────────────────────
--- VISTA: vista_catalogo
--- Facilita RF07 y RF08 — ya trae nombre de categoría y stock
--- ─────────────────────────────────────────────────────────────
-CREATE VIEW vista_catalogo AS
-SELECT
-    p.id,
-    p.nombre,
-    p.marca,
-    p.descripcion,
-    p.precio,
-    p.talla,
-    c.nombre   AS categoria,
-    p.stock,
-    p.imagen_url
-FROM productos p
-JOIN categorias c ON p.categoria_id = c.id
-WHERE p.activo = 1 AND p.stock > 0;
+--
+-- Estructura de tabla para la tabla `clientes`
+--
 
+CREATE TABLE `clientes` (
+  `id_cliente` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `direccion` varchar(200) DEFAULT NULL,
+  `creado_por` int(11) DEFAULT NULL,
+  `estado` enum('activo','inactivo') NOT NULL DEFAULT 'activo'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ─────────────────────────────────────────────────────────────
--- VISTA: vista_pedidos_cliente
--- Facilita RF14 — el cliente ve sus pedidos con total y estado
--- ─────────────────────────────────────────────────────────────
-CREATE VIEW vista_pedidos_cliente AS
-SELECT
-    p.id           AS pedido_id,
-    p.cliente_id,
-    u.nombre       AS cliente,
-    p.estado,
-    p.total,
-    p.creado_en,
-    p.actualizado_en
-FROM pedidos p
-JOIN usuarios u ON p.cliente_id = u.id;
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `historial_movimientos`
+--
 
--- ─────────────────────────────────────────────────────────────
--- DATOS DE PRUEBA
--- ─────────────────────────────────────────────────────────────
+CREATE TABLE `historial_movimientos` (
+  `id_movimiento` int(11) NOT NULL,
+  `tipo_operacion` enum('agregar','editar','eliminar','inactivar') NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp(),
+  `id_usuario` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `detalle` varchar(500) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Cliente de prueba (contraseña: Cliente123)
-INSERT INTO usuarios (nombre, correo, contrasena, rol)
-VALUES ('María Gómez', 'maria@correo.com',
-        '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-        'cliente');
+-- --------------------------------------------------------
 
--- Productos de prueba
-INSERT INTO productos (nombre, marca, descripcion, precio, talla, categoria_id, stock, imagen_url) VALUES
-('Tenis Runner Pro',  'Nike',   'Tenis ligeros para correr',          189900, '42', 1, 10, '/img/runner.jpg'),
-('Zapato Oxford',     'Clarks', 'Zapato formal de cuero genuino',     275000, '41', 2,  5, '/img/oxford.jpg'),
-('Sandalia Verano',   'Crocs',  'Sandalia cómoda para todo el día',    89900, '39', 3,  8, '/img/sandalia.jpg'),
-('Bota Montañera',    'Timberland', 'Bota resistente para campo',     320000, '43', 5,  3, '/img/bota.jpg'),
-('Zapatilla Escolar', 'Bata',   'Zapatilla negra para colegio',        65000, '36', 4, 15, '/img/escolar.jpg');
+--
+-- Estructura de tabla para la tabla `productos`
+--
+
+CREATE TABLE `productos` (
+  `id_producto` int(11) NOT NULL,
+  `codigo` varchar(50) NOT NULL,
+  `nombre` varchar(150) NOT NULL,
+  `descripcion` varchar(255) DEFAULT NULL,
+  `imagen` varchar(255) DEFAULT NULL,
+  `precio` decimal(10,2) NOT NULL CHECK (`precio` >= 0),
+  `stock` int(11) NOT NULL DEFAULT 0 CHECK (`stock` >= 0),
+  `stock_minimo` int(11) NOT NULL DEFAULT 0 CHECK (`stock_minimo` >= 0),
+  `tallas` varchar(100) DEFAULT NULL,
+  `estado` enum('activo','inactivo') NOT NULL DEFAULT 'activo',
+  `id_categoria` int(11) DEFAULT NULL,
+  `id_proveedor` int(11) DEFAULT NULL,
+  `fecha_registro` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_actualizacion` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `proveedores`
+--
+
+CREATE TABLE `proveedores` (
+  `id_proveedor` int(11) NOT NULL,
+  `nombre` varchar(150) NOT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `correo` varchar(150) DEFAULT NULL,
+  `direccion` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `proveedores`
+--
+
+INSERT INTO `proveedores` (`id_proveedor`, `nombre`, `telefono`, `correo`, `direccion`) VALUES
+(1, 'Distribuidora Calzado Antioquia', '3001234567', 'contacto@distcalzado.com', 'Medellín, Antioquia');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `trabajadores`
+--
+
+CREATE TABLE `trabajadores` (
+  `id_trabajador` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `cargo` varchar(100) NOT NULL,
+  `permisos_inventario` tinyint(1) NOT NULL DEFAULT 1,
+  `creado_por` int(11) NOT NULL,
+  `estado` enum('activo','inactivo') NOT NULL DEFAULT 'activo'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id_usuario` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `correo` varchar(150) NOT NULL,
+  `contrasena` varchar(255) NOT NULL,
+  `fecha_registro` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `nombre`, `correo`, `contrasena`, `fecha_registro`) VALUES
+(1, 'Paula Andrea Martinez', 'paula.admin@zapateria.com', 'hash_pendiente_1', '2026-09-16 19:40:05');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `administradores`
+--
+ALTER TABLE `administradores`
+  ADD PRIMARY KEY (`id_administrador`),
+  ADD UNIQUE KEY `id_usuario` (`id_usuario`);
+
+--
+-- Indices de la tabla `categorias`
+--
+ALTER TABLE `categorias`
+  ADD PRIMARY KEY (`id_categoria`),
+  ADD UNIQUE KEY `nombre` (`nombre`);
+
+--
+-- Indices de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  ADD PRIMARY KEY (`id_cliente`),
+  ADD UNIQUE KEY `id_usuario` (`id_usuario`),
+  ADD KEY `fk_cliente_admin` (`creado_por`);
+
+--
+-- Indices de la tabla `historial_movimientos`
+--
+ALTER TABLE `historial_movimientos`
+  ADD PRIMARY KEY (`id_movimiento`),
+  ADD KEY `idx_historial_producto` (`id_producto`),
+  ADD KEY `idx_historial_usuario` (`id_usuario`);
+
+--
+-- Indices de la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD PRIMARY KEY (`id_producto`),
+  ADD UNIQUE KEY `codigo` (`codigo`),
+  ADD KEY `fk_producto_proveedor` (`id_proveedor`),
+  ADD KEY `idx_productos_estado` (`estado`),
+  ADD KEY `idx_productos_categoria` (`id_categoria`);
+
+--
+-- Indices de la tabla `proveedores`
+--
+ALTER TABLE `proveedores`
+  ADD PRIMARY KEY (`id_proveedor`);
+
+--
+-- Indices de la tabla `trabajadores`
+--
+ALTER TABLE `trabajadores`
+  ADD PRIMARY KEY (`id_trabajador`),
+  ADD UNIQUE KEY `id_usuario` (`id_usuario`),
+  ADD KEY `fk_trabajador_admin` (`creado_por`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD UNIQUE KEY `correo` (`correo`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `administradores`
+--
+ALTER TABLE `administradores`
+  MODIFY `id_administrador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `categorias`
+--
+ALTER TABLE `categorias`
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `historial_movimientos`
+--
+ALTER TABLE `historial_movimientos`
+  MODIFY `id_movimiento` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `productos`
+--
+ALTER TABLE `productos`
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `proveedores`
+--
+ALTER TABLE `proveedores`
+  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `trabajadores`
+--
+ALTER TABLE `trabajadores`
+  MODIFY `id_trabajador` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `administradores`
+--
+ALTER TABLE `administradores`
+  ADD CONSTRAINT `fk_admin_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  ADD CONSTRAINT `fk_cliente_admin` FOREIGN KEY (`creado_por`) REFERENCES `administradores` (`id_administrador`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_cliente_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `historial_movimientos`
+--
+ALTER TABLE `historial_movimientos`
+  ADD CONSTRAINT `fk_historial_producto` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`),
+  ADD CONSTRAINT `fk_historial_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
+
+--
+-- Filtros para la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD CONSTRAINT `fk_producto_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id_categoria`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_producto_proveedor` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedores` (`id_proveedor`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `trabajadores`
+--
+ALTER TABLE `trabajadores`
+  ADD CONSTRAINT `fk_trabajador_admin` FOREIGN KEY (`creado_por`) REFERENCES `administradores` (`id_administrador`),
+  ADD CONSTRAINT `fk_trabajador_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
