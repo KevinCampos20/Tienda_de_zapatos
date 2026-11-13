@@ -1,0 +1,160 @@
+🏪 SISTEMA TIENDA DE ZAPATOS
+│
+├── 👤 ROL: ADMIN (Gestión Interna)
+│   │
+│   ├── 🔐 Módulo: Autenticación
+│   │   └── RF03 - Login Administrador
+│   │       ├── Ingresar credenciales (correo + contraseña)
+│   │       ├── Validar credenciales
+│   │       ├── Verificar permisos de administrador
+│   │       ├── Acceder al panel administrativo
+│   │       └── [A1] Mostrar mensaje de error (credenciales inválidas)
+│   │
+│   └── 📦 Módulo: Gestión de Catálogo
+│       │
+│       ├── RF04 - Registrar Productos
+│       │   ├── Ingresar información (nombre, marca, categoría, talla, precio, stock, imagen)
+│       │   ├── Validar datos completos y válidos
+│       │   ├── Verificar producto no repetido
+│       │   ├── Guardar producto en catálogo
+│       │   ├── [OK] Mostrar confirmación
+│       │   └── [A1] Mostrar error (datos incompletos/inválidos)
+│       │
+│       ├── RF05 - Modificar Productos
+│       │   ├── Seleccionar producto existente
+│       │   ├── Cargar formulario con datos actuales
+│       │   ├── Editar campos (nombre, marca, categoría, talla, precio, stock, imagen)
+│       │   ├── Validar datos modificados
+│       │   ├── Guardar cambios en catálogo
+│       │   ├── [OK] Mensaje "Producto modificado correctamente"
+│       │   ├── [A1] Error si datos incompletos/inválidos
+│       │   └── [A2] Error si producto no existe
+│       │
+│       └── RF06 - Eliminar Productos
+│           ├── Seleccionar producto a eliminar
+│           ├── Solicitar confirmación al usuario
+│           ├── [OK] Eliminar producto del catálogo
+│           ├── [OK] Mensaje "Producto eliminado correctamente"
+│           ├── [A1] Cancelar eliminación (regresa al listado)
+│           └── [A2] Error si producto no existe
+│
+├── 👥 ROL: CLIENTE (Experiencia de Compra)
+│   │
+│   ├── 🔐 Módulo: Autenticación y Cuenta
+│   │   │
+│   │   ├── RF01 - Crear Cuenta
+│   │   │   ├── Completar formulario (nombre, correo, contraseña)
+│   │   │   ├── Validar campos obligatorios y formato
+│   │   │   ├── Verificar correo no registrado previamente
+│   │   │   ├── Guardar datos de forma segura (hash)
+│   │   │   ├── [OK] Confirmar registro exitoso
+│   │   │   └── [A1] Error (campo vacío / correo duplicado / formato incorrecto)
+│   │   │
+│   │   └── RF02 - Login Cliente
+│   │       ├── Ingresar correo y contraseña
+│   │       ├── Validar credenciales
+│   │       ├── Autenticar cliente
+│   │       ├── Mantener sesión activa
+│   │       └── [A1] Error (correo inexistente / contraseña incorrecta / datos incompletos)
+│   │
+│   ├── 🛍️ Módulo: Exploración del Catálogo
+│   │   │
+│   │   ├── RF07 - Visualizar Productos
+│   │   │   ├── Consultar catálogo completo
+│   │   │   ├── Mostrar información básica (imagen, nombre, marca, precio)
+│   │   │   ├── [A1] Mensaje si catálogo vacío
+│   │   │   └── [A2] Mensaje si error de carga
+│   │   │
+│   │   ├── RF08 - Ver Detalle del Producto
+│   │   │   ├── Consultar información completa (nombre, marca, categoría, talla, precio, stock, imagen)
+│   │   │   ├── Mostrar detalle en pantalla
+│   │   │   ├── [A1] Mensaje si producto no disponible
+│   │   │   └── [A2] Indicar "Producto agotado" si stock = 0
+│   │   │
+│   │   ├── RF09 - Buscar Productos
+│   │   │   ├── Ingresar término de búsqueda (nombre o marca)
+│   │   │   ├── Validar término no vacío
+│   │   │   ├── Consultar catálogo y mostrar coincidencias
+│   │   │   ├── [A1] Error si campo vacío
+│   │   │   └── [A2] Mensaje si no hay resultados
+│   │   │
+│   │   └── RF10 - Filtrar Productos
+│   │       ├── Seleccionar criterios (categoría, talla, marca, precio)
+│   │       ├── Aplicar uno o varios filtros simultáneamente
+│   │       ├── Mostrar productos que cumplan TODOS los criterios
+│   │       ├── [A1] Mensaje si no hay productos con esos filtros
+│   │       └── [A2] Permitir eliminar filtros (uno o todos)
+│   │
+│   ├── 🛒 Módulo: Carrito de Compras
+│   │   │
+│   │   ├── RF11 - Gestionar Cantidades
+│   │   │   ├── Seleccionar producto disponible
+│   │   │   ├── Indicar cantidad deseada (aumentar/disminuir)
+│   │   │   ├── Verificar disponibilidad en inventario
+│   │   │   ├── Validar cantidad (no negativa, no cero, formato correcto)
+│   │   │   ├── Actualizar cantidad y recalcular subtotal
+│   │   │   ├── [A1] Error si cantidad supera stock disponible
+│   │   │   └── [A2] Error si cantidad no válida
+│   │   │
+│   │   └── RF12 - Carrito de Compras
+│   │       ├── Agregar producto al carrito
+│   │       ├── Visualizar productos (nombre, cantidad, precio unitario, subtotal, total general)
+│   │       ├── Modificar cantidades desde el carrito
+│   │       ├── Eliminar productos del carrito
+│   │       ├── Recalcular total general automáticamente
+│   │       ├── [A1] Error si producto sin disponibilidad
+│   │       └── [A2/A3] Actualizar subtotal y total al modificar/eliminar
+│   │
+│   └── 📦 Módulo: Pedidos
+│       │
+│       ├── RF13 - Realizar Pedido
+│       │   ├── Revisar productos en carrito
+│       │   ├── Seleccionar "Realizar pedido"
+│       │   ├── Validar disponibilidad de productos
+│       │   ├── Mostrar resumen (productos, cantidades, total)
+│       │   ├── Confirmar datos del pedido
+│       │   ├── Registrar pedido con ID único y vaciar carrito
+│       │   ├── Notificar pedido registrado exitosamente
+│       │   ├── [A1] Error si carrito vacío
+│       │   ├── [A2] Error si producto ya no disponible al confirmar
+│       │   └── [A3] Cancelar pedido (conserva productos en carrito)
+│       │
+│       └── RF14 - Consultar Estado del Pedido
+│           ├── Acceder a sección "Mis pedidos"
+│           ├── Listar pedidos asociados al cliente autenticado
+│           ├── Seleccionar pedido específico
+│           ├── Mostrar estado actual (pendiente, confirmado, enviado, entregado)
+│           ├── [A1] Mensaje si no hay pedidos registrados
+│           ├── [A2] Error si pedido inexistente
+│           └── [A3] Denegar acceso si pedido no pertenece al cliente
+│
+└── ⚙️ ROL: SISTEMA (Automatización y Validación Transversal)
+    │
+    ├── 🔒 Seguridad y Sesiones
+    │   ├── Validar tokens JWT en cada petición
+    │   ├── Mantener sesión activa del cliente
+    │   ├── Controlar expiración de sesiones
+    │   └── Denegar acceso a recursos no autorizados (RF14-A3)
+    │
+    ├── ✅ Validaciones de Datos (Transversal)
+    │   ├── Validar formatos (correo, contraseña, números)
+    │   ├── Validar campos obligatorios
+    │   ├── Verificar unicidad (correos, productos)
+    │   └── Validar rangos (precios positivos, stock ≥ 0, cantidades válidas)
+    │
+    ├── 📊 Gestión de Inventario
+    │   ├── Verificar stock disponible antes de agregar al carrito
+    │   ├── Recalcular subtotales y totales automáticamente
+    │   ├── Descontar inventario al confirmar pedido (RF13)
+    │   └── Marcar productos como "agotado" cuando stock = 0
+    │
+    ├── 🔔 Retroalimentación al Usuario
+    │   ├── Mensajes de éxito (toasts verdes)
+    │   ├── Mensajes de error (toasts rojos)
+    │   ├── Mensajes de advertencia (toasts amarillos)
+    │   └── Estados de carga (skeletons, spinners)
+    │
+    └── 🔄 Sincronización de Catálogo
+        ├── Reflejar cambios de Admin en consultas de Cliente (RF05-CA05, RF06-CA05)
+        ├── Actualizar resultados de búsqueda tras modificaciones
+        └── Notificar cambios de disponibilidad en tiempo real

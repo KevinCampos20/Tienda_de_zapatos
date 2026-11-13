@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Detalle del Producto - MIMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./CSS/Styles.css">
+    <meta name="theme-color" content="#0B2239">
+</head>
+<body>
+
+    <header>
+        <a class="logo" href="index.html">MIMO <span>Pasos para toda tu vida</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Catálogo</a></li>
+                <li><a href="carrito.html">Carrito</a></li>
+                <li><a href="mis-pedidos.html">Mis Pedidos</a></li>
+            </ul>
+        </nav>
+        <div class="header-icons">
+            <a href="login.html" data-cuenta aria-label="Mi cuenta" title="Mi cuenta">👤</a>
+            <a href="carrito.html" aria-label="Ver carrito" title="Ver carrito">🛒</a>
+            <a href="index.html" data-logout aria-label="Cerrar sesión" title="Cerrar sesión" style="display:none;">Salir</a>
+        </div>
+    </header>
+
+    <main class="detalle-container">
+        <div id="detalle-producto" class="detalle-grid">
+            <p class="sin-resultados">Cargando producto…</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 MIMO. Pasos para toda tu vida.</p>
+    </footer>
+
+    <script src="./js/api.js"></script>
+    <script src="./js/detalle.js"></script>
+</body>
+</html>

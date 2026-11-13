@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Carrito de Compras - MIMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./CSS/Styles.css">
+    <style>
+        .carrito-item { display: flex; align-items: center; gap: 1.5rem; padding: 1rem; border-bottom: 1px solid var(--azul-profundo); }
+        .carrito-img { width: 80px; height: 80px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .carrito-info { flex: 1; }
+        .carrito-acciones { display: flex; align-items: center; gap: 1rem; }
+        .resumen-carrito { background: var(--beige); padding: 1.5rem; border-radius: 12px; margin-top: 2rem; }
+        .resumen-linea { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+        .total-linea { font-size: 1.3rem; font-weight: 700; color: var(--dorado); border-top: 1px solid var(--azul-profundo); padding-top: 0.5rem; margin-top: 0.5rem; }
+        .carrito-vacio { text-align: center; padding: 3rem 1rem; color: var(--azul-profundo); }
+    </style>
+    <meta name="theme-color" content="#0B2239">
+</head>
+<body>
+
+    <header>
+        <a class="logo" href="index.html">MIMO <span>Pasos para toda tu vida</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Seguir comprando</a></li>
+                <li><a href="mis-pedidos.html">Mis Pedidos</a></li>
+            </ul>
+        </nav>
+        <div class="header-icons">
+            <a href="login.html" data-cuenta aria-label="Mi cuenta" title="Mi cuenta">👤</a>
+            <a href="carrito.html" aria-label="Ver carrito" title="Ver carrito">🛒</a>
+            <a href="index.html" data-logout aria-label="Cerrar sesión" title="Cerrar sesión" style="display:none;">Salir</a>
+        </div>
+    </header>
+
+    <main style="max-width: 900px; margin: 3rem auto; padding: 0 2rem;">
+        <h2 style="color: var(--azul-noche); margin-bottom: 1rem;">Tu Carrito de Compras</h2>
+
+        <p id="mensaje-carrito" class="form-error" role="alert" style="display:none;"></p>
+
+        <div id="lista-carrito" aria-live="polite">
+            <p style="color: var(--azul-profundo); padding: 1rem 0;">Cargando carrito…</p>
+        </div>
+
+        <div id="carrito-vacio" class="carrito-vacio" hidden>
+            <p style="font-size: 3rem; margin-bottom: .5rem;" aria-hidden="true">🛒</p>
+            <p style="margin-bottom: 1rem;">Tu carrito está vacío.</p>
+            <a href="index.html" class="btn btn-primary" style="display: inline-block;">Explorar el catálogo</a>
+        </div>
+
+        <div class="resumen-carrito" id="resumen-carrito" hidden>
+            <div class="resumen-linea"><span>Subtotal:</span> <span id="subtotal">$0</span></div>
+            <div class="resumen-linea"><span>Envío:</span> <span>Gratis</span></div>
+            <div class="resumen-linea total-linea"><span>Total:</span> <span id="total">$0</span></div>
+            <a href="checkout.html" class="btn btn-primary" id="btn-pagar"
+               style="display: block; text-align: center; margin-top: 1.5rem; text-decoration: none;">
+                Ir a Pagar
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 MIMO. Pasos para toda tu vida.</p>
+    </footer>
+
+    <script src="./js/api.js"></script>
+    <script src="./js/carrito.js"></script>
+</body>
+</html>

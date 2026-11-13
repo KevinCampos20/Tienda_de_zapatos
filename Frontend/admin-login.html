@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Login Administrador - MIMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./CSS/Styles.css">
+    <style>
+        /* Pequeño ajuste para diferenciar visualmente el login de admin */
+        .admin-badge {
+            background-color: var(--azul-noche);
+            color: var(--dorado);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+    </style>
+    <meta name="theme-color" content="#0B2239">
+</head>
+<body>
+
+    <header>
+        <a class="logo" href="index.html">MIMO <span>Panel Administrativo</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Ver Tienda</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="form-container">
+        <div style="text-align: center;">
+            <span class="admin-badge">ACCESO RESTRINGIDO</span>
+        </div>
+        <h2>Ingreso Administrador</h2>
+        <form id="form-admin-login" novalidate>
+            <div class="form-group">
+                <label for="admin-correo">Usuario / Correo</label>
+                <input type="text" id="admin-correo" name="admin-correo" autocomplete="username" required>
+            </div>
+            <div class="form-group">
+                <label for="admin-contrasena">Contraseña</label>
+                <input type="password" id="admin-contrasena" name="admin-contrasena"
+                       autocomplete="current-password" required>
+            </div>
+            <p id="form-error" class="form-error" role="alert" style="display:none;"></p>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Entrar al Panel</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>© 2026 MIMO. Sistema de Gestión Interna.</p>
+    </footer>
+
+    <script src="./js/api.js"></script>
+    <script src="./js/auth.js"></script>
+</body>
+</html>

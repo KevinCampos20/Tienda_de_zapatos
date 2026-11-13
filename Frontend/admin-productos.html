@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Panel Admin - MIMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./CSS/Styles.css">
+    <style>
+        /* Estilos específicos para tabla admin */
+        .tabla-productos { width: 100%; border-collapse: collapse; margin-top: 2rem; background: var(--beige); border-radius: 8px; overflow: hidden; }
+        .tabla-productos th { background: var(--azul-noche); color: var(--dorado); padding: 1rem; text-align: left; }
+        .tabla-productos td { padding: 1rem; border-bottom: 1px solid var(--crema); vertical-align: middle; }
+
+        .admin-form { background: var(--beige); border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem; box-shadow: var(--sombra-suave, 0 12px 32px rgba(11,34,57,.09)); }
+        .admin-form h3 { color: var(--azul-noche); margin-bottom: 1rem; border-bottom: 2px solid var(--dorado); padding-bottom: 0.5rem; }
+        .admin-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; }
+        .admin-form-grid .ancho-completo { grid-column: 1 / -1; }
+        .admin-form textarea { width: 100%; min-height: 90px; padding: 0.8rem; border: 1px solid var(--azul-profundo); border-radius: 6px; background-color: var(--crema); font-family: inherit; font-size: 16px; resize: vertical; }
+        .admin-form textarea:focus { outline: none; border-color: var(--dorado); box-shadow: 0 0 0 3px rgba(200,162,74,.2); }
+        .admin-acciones { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+        .admin-cabecera { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .admin-usuario { color: var(--beige); font-size: 0.85rem; }
+
+        @media (max-width: 760px) {
+            .admin-form-grid { grid-template-columns: 1fr; }
+            .admin-cabecera { align-items: flex-start; }
+        }
+    </style>
+    <meta name="theme-color" content="#0B2239">
+</head>
+<body>
+
+    <header>
+        <a class="logo" href="index.html">MIMO <span>Panel Administrativo</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Ver Tienda</a></li>
+                <li><span class="admin-usuario" id="admin-nombre">Administrador</span></li>
+                <li><a href="index.html" data-logout>Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
+        <div class="admin-cabecera">
+            <h2 style="color: var(--azul-noche);">Gestión de Catálogo</h2>
+            <button type="button" class="btn btn-primary" id="btn-nuevo-producto">+ Nuevo Producto</button>
+        </div>
+
+        <p id="mensaje-admin" role="status" style="display:none;"></p>
+
+        <div class="admin-form" id="contenedor-form-producto" hidden>
+            <h3 id="titulo-form-producto">Nuevo Producto</h3>
+            <form id="form-producto" novalidate>
+                <input type="hidden" id="prod-id">
+
+                <div class="admin-form-grid">
+                    <div class="form-group">
+                        <label for="prod-nombre">Nombre</label>
+                        <input type="text" id="prod-nombre" maxlength="100" placeholder="Tenis Runner Pro" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod-marca">Marca</label>
+                        <input type="text" id="prod-marca" maxlength="50" placeholder="Nike" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod-categoria">Categoría</label>
+                        <input type="text" id="prod-categoria" maxlength="50" placeholder="Deportivo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod-talla">Talla</label>
+                        <input type="text" id="prod-talla" maxlength="10" placeholder="40" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod-precio">Precio (COP)</label>
+                        <input type="number" id="prod-precio" min="1" step="0.01" placeholder="189900" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod-stock">Stock</label>
+                        <input type="number" id="prod-stock" min="0" step="1" placeholder="15" required>
+                    </div>
+                    <div class="form-group ancho-completo">
+                        <label for="prod-descripcion">Descripción</label>
+                        <textarea id="prod-descripcion" maxlength="500"
+                                  placeholder="Tenis deportivos livianos para correr" required></textarea>
+                    </div>
+                    <div class="form-group ancho-completo">
+                        <label for="prod-imagen">Imagen (URL o ruta local opcional)</label>
+                        <input type="text" id="prod-imagen" maxlength="500" placeholder="https://… o img/productos/zapato.webp">
+                    </div>
+                </div>
+
+                <div class="admin-acciones">
+                    <button type="submit" class="btn btn-primary">Registrar producto</button>
+                    <button type="button" class="btn btn-secondary" id="btn-cancelar-producto">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
+        <table class="tabla-productos">
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Marca</th>
+                    <th>Categoría</th>
+                    <th>Talla</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-productos-body">
+                <tr>
+                    <td colspan="8" style="text-align:center; padding:2rem;">Cargando productos…</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <p>© 2026 MIMO. Sistema de Gestión Interna.</p>
+    </footer>
+
+    <script src="./js/api.js"></script>
+    <script src="./js/admin.js"></script>
+</body>
+</html>

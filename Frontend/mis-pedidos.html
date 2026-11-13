@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Mis Pedidos - MIMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./CSS/Styles.css">
+    <style>
+        .pedido-card { background: var(--beige); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
+        .pedido-info { flex: 1 1 260px; }
+        .pedido-info h4 { color: var(--azul-noche); margin-bottom: 0.3rem; }
+        .pedido-info p { color: var(--azul-profundo); font-size: 0.9rem; margin: 0; }
+        .badge { padding: 0.4rem 1rem; border-radius: 20px; font-weight: 600; font-size: 0.9rem; display: inline-block; text-transform: capitalize; }
+        .badge-pendiente { background: #fef08a; color: #854d0e; }
+        .badge-confirmado { background: #bfdbfe; color: #1e40af; }
+        .badge-enviado { background: #bbf7d0; color: #166534; }
+        .badge-entregado { background: var(--azul-noche); color: var(--dorado); }
+        .badge-cancelado { background: #fecaca; color: #991b1b; }
+        .pedido-detalle { flex: 1 0 100%; }
+        .pedidos-vacio { text-align: center; padding: 3rem 1rem; color: var(--azul-profundo); }
+    </style>
+    <meta name="theme-color" content="#0B2239">
+</head>
+<body>
+
+    <header>
+        <a class="logo" href="index.html">MIMO <span>Pasos para toda tu vida</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Catálogo</a></li>
+                <li><a href="mis-pedidos.html" style="color: var(--dorado);">Mis Pedidos</a></li>
+            </ul>
+        </nav>
+        <div class="header-icons">
+            <a href="login.html" data-cuenta aria-label="Mi cuenta" title="Mi cuenta">👤</a>
+            <a href="carrito.html" aria-label="Ver carrito" title="Ver carrito">🛒</a>
+            <a href="index.html" data-logout aria-label="Cerrar sesión" title="Cerrar sesión" style="display:none;">Salir</a>
+        </div>
+    </header>
+
+    <main style="max-width: 900px; margin: 3rem auto; padding: 0 2rem;">
+        <h2 style="color: var(--azul-noche); margin-bottom: 1.5rem;">Historial de Pedidos</h2>
+
+        <p id="mensaje-pedidos" class="form-error" role="status" style="display:none;"></p>
+
+        <div id="lista-pedidos" aria-live="polite">
+            <p style="color: var(--azul-profundo); padding: 1rem 0;">Cargando pedidos…</p>
+        </div>
+
+        <div id="pedidos-vacio" class="pedidos-vacio" hidden>
+            <p style="font-size: 3rem; margin-bottom: .5rem;" aria-hidden="true">📦</p>
+            <p style="margin-bottom: 1rem;">Aún no tienes pedidos registrados.</p>
+            <a href="index.html" class="btn btn-primary" style="display: inline-block;">Explorar el catálogo</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 MIMO. Pasos para toda tu vida.</p>
+    </footer>
+
+    <script src="./js/api.js"></script>
+    <script src="./js/mis-pedidos.js"></script>
+</body>
+</html>
