@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Crear Cuenta - MIMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./CSS/Styles.css">
+    
+    <!-- Estilos específicos para el checkbox -->
+    <style>
+        .terminos-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--azul-profundo);
+        }
+        .terminos-group input[type="checkbox"] {
+            margin-top: 0.2rem;
+            accent-color: var(--dorado); /* Hace que el check sea dorado */
+            width: auto;
+            cursor: pointer;
+        }
+        .terminos-group a {
+            color: var(--dorado);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+    </style>
+    <meta name="theme-color" content="#0B2239">
+</head>
+<body>
+
+    <header>
+        <div class="logo">MIMO <span>Pasos para toda tu vida</span></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Catálogo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="form-container">
+        <h2>Crear Cuenta</h2>
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Juan Pérez" required>
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo electrónico</label>
+                <input type="email" id="correo" name="correo" placeholder="tucorreo@ejemplo.com" required>
+            </div>
+            <div class="form-group">
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" placeholder="••••••••" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmar">Confirmar contraseña</label>
+                <input type="password" id="confirmar" name="confirmar" placeholder="••••••••" required>
+            </div>
+
+            <!-- ✅ NUEVO: Checkbox de Términos y Condiciones -->
+            <div class="terminos-group">
+                <input type="checkbox" id="terminos" name="terminos" required>
+                <label for="terminos">
+                    Acepto los <a href="#">Términos y Condiciones</a> y la <a href="#">Política de Privacidad</a> de MIMO.
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Crear cuenta</button>
+        </form>
+        
+        <p style="text-align: center; margin-top: 1.5rem; color: var(--azul-profundo);">
+            ¿Ya tienes cuenta? <a href="login.html" style="color: var(--dorado); font-weight: 600;">Inicia sesión</a>
+        </p>
+    </main>
+
+    <footer>
+        <p>© 2026 MIMO. Pasos para toda tu vida.</p>
+    </footer>
+
+</body>
+</html>

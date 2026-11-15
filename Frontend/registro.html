@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Crear Cuenta - MIMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./CSS/Styles.css">
+    <meta name="theme-color" content="#0B2239">
+</head>
+<body>
+
+    <header>
+        <a class="logo" href="index.html">MIMO <span>Pasos para toda tu vida</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Catálogo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="form-container">
+        <h2>Crear Cuenta</h2>
+        <form id="form-registro" novalidate>
+            <div class="form-group">
+                <label for="tipoDocumento">Tipo de documento</label>
+                <select id="tipoDocumento" name="tipoDocumento" required>
+                    <option value="CC">Cédula de ciudadanía (CC)</option>
+                    <option value="TI">Tarjeta de identidad (TI)</option>
+                    <option value="CE">Cédula de extranjería (CE)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="numeroDocumento">Número de documento</label>
+                <input type="text" id="numeroDocumento" name="numeroDocumento" inputmode="numeric"
+                       pattern="\d{8,10}" maxlength="10" placeholder="1234567890" required>
+            </div>
+            <div class="form-group">
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" name="nombre" maxlength="100" placeholder="Juan Pérez" required>
+            </div>
+            <div class="form-group">
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" name="direccion" maxlength="200" placeholder="Calle 123 #45-67" required>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="tel" id="telefono" name="telefono" inputmode="numeric"
+                       pattern="\d{10}" maxlength="10" placeholder="3001234567" required>
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo electrónico</label>
+                <input type="email" id="correo" name="correo" maxlength="250" placeholder="tucorreo@ejemplo.com"
+                       autocomplete="email" required>
+            </div>
+            <div class="form-group">
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" placeholder="••••••••"
+                       autocomplete="new-password" required>
+                <small style="color: var(--azul-profundo); font-size: .8rem;">
+                    Mínimo 8 caracteres, con mayúscula, minúscula, número y símbolo.
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="confirmar">Confirmar contraseña</label>
+                <input type="password" id="confirmar" name="confirmar" placeholder="••••••••"
+                       autocomplete="new-password" required>
+            </div>
+            <p id="form-error" class="form-error" role="alert" style="display:none;"></p>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Crear cuenta</button>
+        </form>
+        <p style="text-align: center; margin-top: 1.5rem; color: var(--azul-profundo);">
+            ¿Ya tienes cuenta? <a href="login.html" style="color: var(--dorado); font-weight: 600;">Inicia sesión</a>
+        </p>
+    </main>
+
+    <footer>
+        <p>© 2026 MIMO. Pasos para toda tu vida.</p>
+    </footer>
+
+    <script src="./js/api.js"></script>
+    <script src="./js/auth.js"></script>
+</body>
+</html>

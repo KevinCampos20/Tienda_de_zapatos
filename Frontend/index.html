@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>MIMO - Pasos para toda tu vida</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./CSS/Styles.css">
+    <style>
+        /* Botones de categoría activos */
+        nav a.categoria-activa {
+            color: var(--dorado);
+            border-bottom: 2px solid var(--dorado);
+            padding-bottom: 4px;
+        }
+
+        /* Animación suave para las tarjetas */
+        .producto-card { text-decoration: none; color: inherit; }
+
+        /* Mensaje cuando no hay productos */
+        .sin-resultados {
+            text-align: center;
+            padding: 3rem;
+            color: var(--azul-profundo);
+            font-size: 1.1rem;
+            grid-column: 1 / -1;
+        }
+
+        .buscador { display: flex; gap: .5rem; margin-bottom: 1rem; }
+        .buscador input { flex: 1; min-width: 0; padding: .6rem; border: 1px solid var(--azul-profundo); border-radius: 6px; }
+    </style>
+    <meta name="theme-color" content="#0B2239">
+</head>
+<body>
+
+    <header>
+        <a class="logo" href="index.html" aria-label="MIMO, volver al catálogo">MIMO <span>Pasos para toda tu vida</span></a>
+        <nav aria-label="Categorías">
+            <ul id="nav-categorias">
+                <li><a href="#" class="filtro-categoria categoria-activa" data-categoria="todos">Catálogo</a></li>
+            </ul>
+        </nav>
+        <div class="header-icons">
+            <a href="login.html" data-cuenta aria-label="Mi cuenta" title="Mi cuenta">👤</a>
+            <a href="carrito.html" aria-label="Ver carrito" title="Ver carrito">🛒</a>
+            <a href="index.html" data-logout aria-label="Cerrar sesión" title="Cerrar sesión" style="display:none;">Salir</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Encuentra tu paso perfecto</h1>
+        <p>Comodidad y estilo en cada zapato.</p>
+    </section>
+
+    <main class="catalogo-container">
+        <!-- Filtros (RF10) y búsqueda (RF09) -->
+        <aside class="filtros">
+            <h3>Filtros</h3>
+
+            <div class="form-group">
+                <label for="filtro-buscar">Buscar</label>
+                <div class="buscador">
+                    <input type="search" id="filtro-buscar" placeholder="Nombre, marca…" aria-label="Buscar productos">
+                    <button type="button" class="btn btn-primary" id="btn-buscar" style="padding: .5rem .8rem;">🔍</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="filtro-categoria">Tipo de calzado</label>
+                <select id="filtro-categoria">
+                    <option value="todos">Todos</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="filtro-talla">Talla</label>
+                <select id="filtro-talla">
+                    <option value="todos">Todas</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="filtro-marca">Marca</label>
+                <select id="filtro-marca">
+                    <option value="todos">Todas</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" id="btn-aplicar-filtros" style="width: 100%;">Aplicar</button>
+            <button class="btn btn-secondary" id="btn-limpiar-filtros" style="width: 100%; margin-top: 0.5rem;">Limpiar filtros</button>
+        </aside>
+
+        <!-- Grid de Productos (RF07, RF09, RF10) -->
+        <section class="productos-grid" id="productos-grid" aria-label="Catálogo de productos" aria-live="polite">
+            <!-- Los productos se cargan dinámicamente desde el backend -->
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 MIMO. Pasos para toda tu vida.</p>
+    </footer>
+
+    <script src="./js/api.js"></script>
+    <script src="./js/catalogo.js"></script>
+</body>
+</html>

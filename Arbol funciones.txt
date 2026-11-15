@@ -1,0 +1,14 @@
+                            🏪 SISTEMA TIENDA DE ZAPATOS
+                                            │
+            ┌───────────────────────────────┼───────────────────────────────┐
+            │                               │                               │
+       👤 ADMIN                        👥 CLIENTE                      ⚙️ SISTEMA
+     (Gestión)                      (Compra/Consulta)              (Validación/Automatización)
+            │                               │                               │
+            │                               │                               │
+    ┌───────┴───────┐                       │                               │
+    │               │                       │                               │
+ 🔐 AUTH       📦 CATÁLOGO                 │                               │
+    │               │                       │                               │
+    │               │                       │                               │
+    ▼               ▼                       ▼                               ▼
